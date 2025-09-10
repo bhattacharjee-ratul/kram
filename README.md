@@ -15,20 +15,20 @@ a light-weight workflow orchestrator written in python to be used as a dependenc
 ```
 
 **File tasks/generate_numbers.py**
-
+```
 from kram.abstract_task import AbstractTask
 
 class GenerateNumbers(AbstractTask):
 
     def run(self, params):
         return {"numbers": [1,2,3,4,5]}
-
+```
 ----------------------------------------------
 
 
 
 **File tasks/calculate_sum.py**
-
+```
 from kram.abstract_task import AbstractTask
 
 class CalculateSum(AbstractTask):
@@ -36,11 +36,11 @@ class CalculateSum(AbstractTask):
     def run(self, params):
         numbers = params['numbers']
         return {"result": sum(numbers)}
-
+```
 --------------------------------------------
 
 **File workflows/calculator_wf.py**
-
+```
 from tasks.calculate_sum import CalculateSum
 from tasks.generate_numbers import GenerateNumbers
 from kram.base_workflow import BaseWorkflow
@@ -53,11 +53,11 @@ class CalculatorWf(BaseWorkflow):
     def define(self):
         self.add_task(GenerateNumbers())
         self.add_task(CalculateSum())
-
+```
 ------------------------------------------
 
 **File main.py**
-
+```
 from kram.workflow_runner import WorkflowRunner
 from workflows.calculator_wf import CalculatorWf
 
@@ -67,7 +67,13 @@ wf_runner = WorkflowRunner()
 workflow = CalculatorWf()
 status = wf_runner.run_workflow(workflow)
 print(status)
+```
+--------------------------------------------
 
+**Output**
+```
+{'status': True, 'tasks': {'GenerateNumbers': {'status': True, 'msg': None}, 'CalculateSum': {'status': True, 'msg': None}}, 'outputs': {'numbers': [1, 2, 3, 4, 5], 'result': 15}}
+```
 
 
 
