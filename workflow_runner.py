@@ -1,27 +1,7 @@
 class WorkflowRunner:
 
-    def __init__(self, database_connector=None):
-
-        # if not database_connector:
-        #     raise Exception("Database connection not provided")
-        # self.db_conn = database_connector
+    def __init__(self):
         self.context = {}
-
-    # def __get_workflow_metadata(self, workflow_name):
-    #     query = {}
-    #     workflow_metadata = self.db_conn.execute(query)
-    #     return workflow_metadata
-    
-    # def __execute_task(self, task, params={}):
-    #     pass
-    #     return {
-    #         "status": True,
-    #         "output": None,
-    #         "msg": None
-    #         }
-    
-    # def __persist_workflow_status(self, status):
-    #     pass
 
     def run_workflow(self, workflow):
         workflow.define()
