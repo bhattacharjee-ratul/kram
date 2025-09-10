@@ -3,14 +3,16 @@ a light-weight workflow orchestrator written in python to be used as a dependenc
 
 ## Sample Example
 ### Directory Structure
-|--- main.py
-|--- tasks
-|    |--- __init__.py
-|    |--- calculate_sum.py
-|    |--- generate_numbers.py
-|--- workflows
-|    |--- __init__.py
-|    |--- calculator_wf.py
+.
+├── main.py
+├── tasks
+│   ├── __init__.py
+│   ├── __pycache__
+│   ├── calculate_sum.py
+│   └── generate_numbers.py
+└── workflows
+    ├── __pycache__
+    └── calculator_wf.py
 
 
 **File tasks/generate_numbers.py**
