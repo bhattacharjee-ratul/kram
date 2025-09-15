@@ -152,6 +152,10 @@ class WorkflowRunner:
             "outputs": self.context
         }
 
+
+    def execute_wf(self, wf_class):
+        wf_instance = wf_class()
+        wf_instance.run()
             
 
 
