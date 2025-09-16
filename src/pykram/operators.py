@@ -16,6 +16,7 @@ class ExecutionRuntime:
         return self
     
     def __exit__(self, x,y,z):
+        print(f"Closing the execution runtime; x={x}, y={y}, z={z}")
         return self
     
     # the Execution runtime also contains several functions that are exposed to the user to be used for defining the workflow
@@ -33,7 +34,7 @@ class ExecutionRuntime:
         task_instance = task_class()
         run_executable_with_parameters(
             task_instance, self.workflow_instance.workflow_context)
-        task_instance.run()
+        
 
 
 
