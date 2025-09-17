@@ -2,79 +2,34 @@
 a light-weight workflow orchestrator written in python to be used as a dependency 
 
 ## Sample Example
-### Directory Structure
 ```
-.
-├── main.py
-├── tasks
-│├── __init__.py
-│├── calculate_sum.py
-│└── generate_numbers.py
-└── workflows
-    └── calculator_wf.py
+from pykram.operators import ExecutionRuntime
+from pykram.types import define_schema, declare_field, InputField
+from pykram.utils import run_workflow
+from pykram.dag import Workflow, Task
+
+
+class ParseEffort(Task):
+    def run(self):
+        print("Running ParseEffort task")
+
+
+@define_schema(declare_field(InputField("filename")))
+class ReadFile(Task):
+    def run(self, filename):
+        print("Running ReadFile task; FILENMAE: {}".format(filename))
+
+
+@define_schema(declare_field(InputField("filename")))
+class DocParserWf(Workflow):
+
+    def run(self, filename):
+        with ExecutionRuntime(self) as ex_runtime:
+            ex_runtime.set_vars_(filename=filename)
+            ex_runtime.execute_(ReadFile)
+            ex_runtime.execute_(ParseEffort)
+        return 0
+    
+response = run_workflow(DocParserWf,filename="records.csv")
 ```
-
-**File tasks/generate_numbers.py**
-```
-from kram.abstract_task import AbstractTask
-
-class GenerateNumbers(AbstractTask):
-
-    def run(self, params):
-        return {"numbers": [1,2,3,4,5]}
-```
-----------------------------------------------
-
-
-
-**File tasks/calculate_sum.py**
-```
-from kram.abstract_task import AbstractTask
-
-class CalculateSum(AbstractTask):
-
-    def run(self, params):
-        numbers = params['numbers']
-        return {"result": sum(numbers)}
-```
---------------------------------------------
-
-**File workflows/calculator_wf.py**
-```
-from tasks.calculate_sum import CalculateSum
-from tasks.generate_numbers import GenerateNumbers
-from kram.base_workflow import BaseWorkflow
-
-class CalculatorWf(BaseWorkflow):
-
-    def __init__(self):
-        super().__init__()
-
-    def define(self):
-        self.add_task(GenerateNumbers())
-        self.add_task(CalculateSum())
-```
-------------------------------------------
-
-**File main.py**
-```
-from kram.workflow_runner import WorkflowRunner
-from workflows.calculator_wf import CalculatorWf
-
-
-wf_runner = WorkflowRunner()
-
-workflow = CalculatorWf()
-status = wf_runner.run_workflow(workflow)
-print(status)
-```
---------------------------------------------
-
-**Output**
-```
-{'status': True, 'tasks': {'GenerateNumbers': {'status': True, 'msg': None}, 'CalculateSum': {'status': True, 'msg': None}}, 'outputs': {'numbers': [1, 2, 3, 4, 5], 'result': 15}}
-```
-
-
-
 
