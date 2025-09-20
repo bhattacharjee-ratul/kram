@@ -41,7 +41,8 @@ class ExecutionRuntime:
         if type_of_response is not tuple:
             response = (response,)
         # Now parse the output fields and store the returned response accordingly
-        for index, field_name, field_definition in enumerate(task_instance.__dict__.items()):
+        for index, field in enumerate(task_instance.__dict__.items()):
+            field_name, field_definition = field
             if field_definition.__class__ == OutputField:
                  
                 value_to_be_stored = response[index]
