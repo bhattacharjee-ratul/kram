@@ -35,7 +35,6 @@ class ExecutionRuntime:
         task_instance = task_class()
         response = run_executable_with_parameters(
             task_instance, self.workflow_instance.workflow_context)
-        import pdb;pdb.set_trace()
         type_of_response = type(response)
 
         if type_of_response is not tuple:
