@@ -4,14 +4,16 @@ from .dag import Workflow
 from .utils import run_executable_with_parameters
 from .types import OutputField
 
-class ExecutionRuntime:
+
+class RunnableSpan:
     '''
         @brief: This class contain the information about the workflow that is running.
         This implements the Context Manger protocol.
     '''
 
-    def __init__(self, workflow_instance:Workflow):
-        self.workflow_instance = workflow_instance
+    def __init__(self, executable_instance:Workflow, parent_runtime=None):
+        self.executable_instance = executable_instance
+        
 
     def __enter__(self):
         return self
@@ -34,7 +36,7 @@ class ExecutionRuntime:
     def execute_(self, task_class):
         task_instance = task_class()
         response = run_executable_with_parameters(
-            task_instance, self.workflow_instance.workflow_context)
+            task_instance, self.executable_instance.workflow_context)
         type_of_response = type(response)
 
         if type_of_response is not tuple:
@@ -50,7 +52,7 @@ class ExecutionRuntime:
                     if type(value_to_be_stored) != field_definition.datatype:
                         raise Exception(f"Wrong datatype provided for field {field_name}")
                 
-                self.workflow_instance.workflow_context[field_name] = value_to_be_stored
+                self.executable_instance.workflow_context[field_name] = value_to_be_stored
     
         
         
