@@ -15,10 +15,9 @@ class InputField(Field):
         
 class OutputField(Field):
 
-    def __init__(self, field_name, default=None, type=str, output_as=None, validate_datatype=False):
-        self.field_name = field_name
-        self.output_name = output_as
-        self.default = default
+    def __init__(self, fieldname,  type=str, context_name=None, validate_datatype=False):
+        self.field_name = fieldname
+        self.context_name = context_name if context_name else fieldname
         self.datatype= type
         self.validate_datatype = validate_datatype
 
