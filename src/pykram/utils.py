@@ -17,8 +17,6 @@ def run_executable_with_parameters(executable_instance, context):
                 if type(value_of_field) != field_definition.datatype:
                     raise Exception(f"Wrong datatype provided for field {field_name}")
             input_parameters[field_name] = value_of_field
-        
-
     print(f"For running: {executable_instance.__class__.__name__}; input params: {input_parameters}")
     response = getattr(executable_instance, "run")(**input_parameters)
     return response

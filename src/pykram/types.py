@@ -39,8 +39,13 @@ def define_schema(transformation_function):
     def class_decorator(cls):
         original_new = cls.__new__
         def decorated_new(c, *args, **kwargs):
-            instance = original_new(c, *args, **kwargs)
-            return transformation_function(instance)
+            if original_new is object.__new__:
+                instance = original_new(c)
+            else:
+                instance = original_new(c, *args, **kwargs)
+            if instance is not None:
+                instance = transformation_function(instance)
+            return instance
         cls.__new__ = staticmethod(decorated_new)
         return cls
     return class_decorator

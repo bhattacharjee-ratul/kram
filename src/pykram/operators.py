@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from types import MethodType
-from .dag import Workflow
 from .utils import run_executable_with_parameters
 from .types import OutputField
+from .runtime import ExecutableRuntime
 
 
 class RunnableSpan:
@@ -11,7 +11,7 @@ class RunnableSpan:
         This implements the Context Manger protocol.
     '''
 
-    def __init__(self, executable_instance:Workflow, parent_runtime=None):
+    def __init__(self, executable_instance:ExecutableRuntime, parent_runtime=None):
         self.executable_instance = executable_instance
         
 
