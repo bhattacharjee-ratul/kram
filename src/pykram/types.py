@@ -15,10 +15,9 @@ class InputField(Field):
         
 class OutputField(Field):
 
-    def __init__(self, field_name, default=None, type=str, output_as=None, validate_datatype=False):
-        self.field_name = field_name
-        self.output_name = output_as
-        self.default = default
+    def __init__(self, fieldname,  type=str, context_name=None, validate_datatype=False):
+        self.field_name = fieldname
+        self.context_name = context_name if context_name else fieldname
         self.datatype= type
         self.validate_datatype = validate_datatype
 
@@ -39,8 +38,13 @@ def define_schema(transformation_function):
     def class_decorator(cls):
         original_new = cls.__new__
         def decorated_new(c, *args, **kwargs):
-            instance = original_new(c, *args, **kwargs)
-            return transformation_function(instance)
+            if original_new is object.__new__:
+                instance = original_new(c)
+            else:
+                instance = original_new(c, *args, **kwargs)
+            if instance is not None:
+                instance = transformation_function(instance)
+            return instance
         cls.__new__ = staticmethod(decorated_new)
         return cls
     return class_decorator
