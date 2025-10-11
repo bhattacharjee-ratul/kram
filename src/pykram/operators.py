@@ -6,6 +6,12 @@ from .runtime import ExecutableRuntime
 from .executable_runner import ExecutableRunner
 
 
+def execution_output(**kwargs):
+    def return_wrapper(runtime):
+        runtime_context = runtime.context
+        runtime.set_context({**runtime_context, **kwargs})
+    return return_wrapper
+
 class RunnableSpan:
     '''
         @brief: This class contain the information about the workflow that is running.

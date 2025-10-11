@@ -70,7 +70,8 @@ class ExecutableRuntime:
     def start(self, **kwargs):
         print("Executable started")
         self.__set_state(RuntimeState.RUNNING)
-        self.run(**kwargs)
+        output_wrapper = self.run(**kwargs)
+        output_wrapper(self)
     
     def complete(self, **kwargs):
         self.__set_state(RuntimeState.SUCCESS)
