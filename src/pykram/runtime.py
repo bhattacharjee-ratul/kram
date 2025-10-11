@@ -38,7 +38,7 @@ class ExecutableRuntime:
             "type": self.executable_type,
             "state": self.state,
             "parent_execution_id": self.parent_execution_id, 
-            "context": self.context,
+            
         }
         if not self.execution_id:
             # Insert new doucment
@@ -61,7 +61,7 @@ class ExecutableRuntime:
 
     def set_context(self, new_context):
         self.context = new_context
-        self.__persist()
+        
 
     def __set_state(self, state:RuntimeState):
         self.state = state.value
@@ -70,7 +70,8 @@ class ExecutableRuntime:
     def start(self, **kwargs):
         print("Executable started")
         self.__set_state(RuntimeState.RUNNING)
-        self.run(**kwargs)
+        output_wrapper = self.run(**kwargs)
+        output_wrapper(self)
     
     def complete(self, **kwargs):
         self.__set_state(RuntimeState.SUCCESS)
